@@ -1,9 +1,10 @@
 import React from 'react';
+import WritingPost_1 from '../WritingPost_1/WritingPost_1';
 
 const Home = () => {
     return (
         <div>
-            <h2>Hellow</h2>
+            <WritingPost_1></WritingPost_1>
         </div>
     );
 };
