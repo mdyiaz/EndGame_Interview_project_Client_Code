@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import pic from '../../assest/cap.jpg'
 import {BiPhotoAlbum} from 'react-icons/bi'
 import {BsPeopleFill} from 'react-icons/bs'
@@ -9,9 +9,11 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+
 const BookingModal = () => {
 
     const {register, handleSubmit} = useForm();
+  
 
     const imgHostKey = process.env.REACT_APP_imgbb_key;
 
@@ -32,7 +34,9 @@ const BookingModal = () => {
                     console.log(imgData.data.url);
                     const post = {
                         status: data.text,
-                        image: imgData.data.url
+                        image: imgData.data.url,
+                        like: 0,
+                        time: new Date().getTime()
                     }
 
                     fetch('https://endgame-interview-project-server.vercel.app/post', {

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import {AiOutlineLike} from 'react-icons/ai'
+import {AiOutlineLike, AiTwotoneDislike} from 'react-icons/ai'
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
@@ -10,6 +10,13 @@ const Media_2 = () => {
     const {register, handleSubmit} = useForm();
 
 
+    const [like, setLike] = useState(false);
+
+
+
+   
+
+   
 
 
 
@@ -20,6 +27,8 @@ const Media_2 = () => {
             cmnt: data.com,
             name: 'user',
             image: 'https://i.ibb.co/qDQp0k5/logan.jpg'
+           
+
         }
         fetch('https://endgame-interview-project-server.vercel.app/comment',{
             method: 'POST',
@@ -42,12 +51,14 @@ const Media_2 = () => {
 
 
 
-    const {data:post = [] , isLoading} = useQuery({
+    const {data:post = [] , isLoading, refetch:likeRefetch} = useQuery({
         queryKey:['post'],
         queryFn: async () => {
             const res = await fetch('https://endgame-interview-project-server.vercel.app/post')
             const data = await res.json();
             return data;
+
+            
         }
      })
 
@@ -67,15 +78,43 @@ const Media_2 = () => {
      })
 
 
-     console.log(comments);
+     
 
 
+
+
+
+
+     const likehandler = (data, id) => {
+        const updateLike = data + 1;
+        const allData = {
+            updateLike,
+        }
+
+        const fetchFunction = async () => {
+            const loadFetch = await fetch(`http://localhost:5000/likes?id=${id}`, {
+                method: 'PATCH',
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(allData)
+            })
+            const response = await loadFetch.json()
+            console.log(response);
+            likeRefetch()
+        }
+        fetchFunction()
+    }
 
 
 
      if(isLoading){
         return <p>LOading...</p>
      }
+
+
+
+
     
     return (
         <div>
@@ -95,7 +134,14 @@ const Media_2 = () => {
   <figure><img src={p.image} alt="Shoes" className='rounded-xl mb-3' /></figure>
   <hr />
   <div className='flex justify-between mt-2 mb-5'>
-        <AiOutlineLike size='25px' />
+    {/* <button onClick={() => setLike((prevLike) => !prevLike)}>Like: {like ? <AiOutlineLike size='25px' /> : <AiTwotoneDislike size='25px'/> }</button> */}
+
+     <button onClick={() =>likehandler(p.like, p._id)} ><AiOutlineLike size='25px' /></button>
+      <p>{p.like}</p>
+      {/* <button>  <AiTwotoneDislike size='25px'/></button> */}
+     
+
+       
        
 
         <form onSubmit={handleSubmit(handleComment)}>
