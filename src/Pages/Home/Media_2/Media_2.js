@@ -92,7 +92,7 @@ const Media_2 = () => {
         }
 
         const fetchFunction = async () => {
-            const loadFetch = await fetch(`http://localhost:5000/likes?id=${id}`, {
+            const loadFetch = await fetch(`https://endgame-interview-project-server.vercel.app/likes?id=${id}`, {
                 method: 'PATCH',
                 headers: {
                     "content-type": "application/json"
